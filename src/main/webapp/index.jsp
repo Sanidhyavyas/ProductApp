@@ -1,8 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.productapp.model.Product, java.util.List"%>
 <%
-Product product = (Product) request.getAttribute("product");
-List<Product> products = (List<Product>) request.getAttribute("products");
+    Product product = (Product) request.getAttribute("product");
+    List<Product> products = (List<Product>) request.getAttribute("products");
+
+    boolean isEdit      = (product != null);
+    String  productId   = isEdit ? String.valueOf(product.getProductId())   : "";
+    String  productName = isEdit ? product.getProductName()                  : "";
+    String  price       = isEdit ? String.valueOf(product.getPrice())        : "";
+    String  formTitle   = isEdit ? "Edit Product"   : "Add Product";
+    String  submitLabel = isEdit ? "Update Product" : "Save Product";
 %>
 <!DOCTYPE html>
 <html>
@@ -19,32 +26,28 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 		<!-- Product Form -->
 		<div class="card shadow mb-4">
 			<div class="card-header bg-primary text-white">
-				<h3 class="mb-0">
-					<%=product != null ? "Edit Product" : "Add Product"%>
-				</h3>
+				<h3 class="mb-0"><%=formTitle%></h3>
 			</div>
 
 			<div class="card-body">
 				<form action="product" method="post">
 
-					<input type="hidden" name="productId"
-						value="<%=product != null ? product.getProductId() : ""%>">
+					<input type="hidden" name="productId" value="<%=productId%>">
 
 					<div class="mb-3">
-						<label class="form-label">Product Name</label> <input type="text"
-							class="form-control" name="productName"
-							value="<%=product != null ? product.getProductName() : ""%>"
-							required>
+					<label class="form-label">Product Name</label>
+					<input type="text" class="form-control" name="productName"
+						value="<%=productName%>" required>
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label">Price</label> <input type="number"
-							step="0.01" class="form-control" name="price"
-							value="<%=product != null ? product.getPrice() : ""%>" required>
+					<label class="form-label">Price</label>
+					<input type="number" step="0.01" class="form-control" name="price"
+						value="<%=price%>" required>
 					</div>
 
 					<button type="submit" class="btn btn-success">
-						<%=product != null ? "Update Product" : "Save Product"%>
+						<%=submitLabel%>
 					</button>
 
 					<a href="product" class="btn btn-secondary">Clear</a>
